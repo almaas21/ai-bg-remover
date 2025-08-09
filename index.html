@@ -1,18 +1,43 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Background Remover</title>
-    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>AI Background Remover</h1>
-        <input type="file" id="fileInput" accept="image/*">
-        <button id="removeBtn">Remove Background</button>
-        <div id="result"></div>
-    </div>
-    <script src="./app.js"></script>
+    <h1>AI Background Remover</h1>
+    <input type="file" id="imageInput" accept="image/*">
+    <button id="uploadBtn">Remove Background</button>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('uploadBtn').addEventListener('click', async () => {
+            const fileInput = document.getElementById('imageInput');
+            if (!fileInput.files.length) {
+                alert("Please select an image first.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+
+            try {
+                const res = await fetch("https://ai-background-remover-production-f3ac.up.railway.app/remove-bg", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (!res.ok) throw new Error("Failed to remove background");
+
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
+                document.getElementById('result').innerHTML = `<img src="${url}" alt="Processed Image">`;
+            } catch (err) {
+                alert("Error removing background: " + err.message);
+            }
+        });
+    </script>
 </body>
 </html>
