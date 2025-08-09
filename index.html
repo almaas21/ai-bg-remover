@@ -1,23 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AI Background Remover</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Background Remover</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
-<body class="bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
-
-  <div id="root"></div>
-
-  <!-- React & ReactDOM -->
-  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-
-  <!-- Framer Motion -->
-  <script src="https://unpkg.com/framer-motion/dist/framer-motion.umd.js"></script>
-
-  <!-- Your App -->
-  <script src="app.js"></script>
+<body>
+    <div class="container">
+        <h1>AI Background Remover</h1>
+        <input type="file" id="fileInput" accept="image/*">
+        <button id="removeBtn">Remove Background</button>
+        <div id="result"></div>
+    </div>
+    <script src="./app.js"></script>
 </body>
 </html>
