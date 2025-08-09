@@ -1,77 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Background Remover - Pay & Use</title>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Background Remover</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Background Remover</h1>
+<body class="bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
 
-    <button id="payBtn">Pay ₹10 to Unlock</button>
-    <br><br>
-    <input type="file" id="fileInput" disabled>
-    <button id="uploadBtn" disabled>Remove Background</button>
-    <div id="output"></div>
+  <div id="root"></div>
 
-    <script>
-        const BACKEND_URL = "https://your-railway-url"; // change this
+  <!-- React & ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 
-        document.getElementById("payBtn").addEventListener("click", async () => {
-            const orderRes = await fetch(`${BACKEND_URL}/create-order`, { method: "POST" });
-            const orderData = await orderRes.json();
+  <!-- Framer Motion -->
+  <script src="https://unpkg.com/framer-motion/dist/framer-motion.umd.js"></script>
 
-            const options = {
-                key: "YOUR_RAZORPAY_KEY_ID", // Public Key
-                amount: orderData.amount,
-                currency: orderData.currency,
-                order_id: orderData.id,
-                name: "Background Remover",
-                description: "Pay to unlock background removal",
-                handler: async function (response) {
-                    // Verify payment
-                    const verifyRes = await fetch(`${BACKEND_URL}/verify-payment`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(response)
-                    });
-                    const verifyData = await verifyRes.json();
-                    if (verifyData.status === "success") {
-                        alert("Payment successful! You can now upload images.");
-                        document.getElementById("fileInput").disabled = false;
-                        document.getElementById("uploadBtn").disabled = false;
-                    } else {
-                        alert("Payment verification failed.");
-                    }
-                }
-            };
-
-            const rzp = new Razorpay(options);
-            rzp.open();
-        });
-
-        document.getElementById("uploadBtn").addEventListener("click", async () => {
-            const file = document.getElementById("fileInput").files[0];
-            if (!file) {
-                alert("Please choose an image first.");
-                return;
-            }
-            const formData = new FormData();
-            formData.append("file", file);
-
-            const res = await fetch(`${BACKEND_URL}/remove-bg`, {
-                method: "POST",
-                body: formData
-            });
-
-            if (!res.ok) {
-                alert("Payment required or error occurred.");
-                return;
-            }
-
-            const blob = await res.blob();
-            const url = URL.createObjectURL(blob);
-            document.getElementById("output").innerHTML = `<img src="${url}" style="max-width:100%">`;
-        });
-    </script>
+  <!-- Your App -->
+  <script src="app.js"></script>
 </body>
 </html>
